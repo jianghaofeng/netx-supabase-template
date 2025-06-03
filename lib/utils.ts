@@ -16,23 +16,13 @@ export const hasEnvVars =
  * @returns 完整的URL
  */
 export function getURL(path: string = "") {
-  // 获取基本URL
   let url =
-    process?.env?.NEXT_PUBLIC_SITE_URL ?? // 手动设置的网站URL（生产环境）
-    (process?.env?.VERCEL_URL ? `https://${process?.env?.VERCEL_URL}` : // Vercel自动设置
-    "http://localhost:3000");
-  
-  // 确保非localhost环境使用https
-  url = url.includes("localhost") ? url : (url.startsWith("http") ? url : `https://${url}`);
-  
-  // 确保URL末尾有斜杠（如果需要）
-  url = url.endsWith("/") || path.startsWith("/") ? url : `${url}/`;
-  
-  // 添加路径（如果有）
-  if (path) {
-    const cleanPath = path.startsWith("/") ? path.slice(1) : path;
-    url = `${url}${cleanPath}`;
-  }
-  
-  return url;
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+    'http://localhost:3000/'
+  // Make sure to include `https://` when not localhost.
+  url = url.startsWith('http') ? url : `https://${url}`
+  // Make sure to include a trailing `/`.
+  url = url.endsWith('/') ? url : `${url}/`
+  return url
 }
