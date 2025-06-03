@@ -1,6 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
+import { cn, getURL } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 import {
@@ -41,23 +41,12 @@ export function SignUpForm({
     }
 
     try {
-      // 获取当前环境的URL
-      const getURL = () => {
-        let url =
-          process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
-          process.env.VERCEL_URL ?? // Automatically set by Vercel.
-          "http://localhost:3000/";
-        // Make sure to include `https://` when not localhost.
-        url = url.startsWith("http") ? url : `https://${url}`;
-        // Make sure to include a trailing `/`.
-        url = url.endsWith("/") ? url : `${url}/`;
-        return url;
-      };
+      // 使用公共的getURL函数
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: getURL(),
+          emailRedirectTo: getURL("protected"),
         },
       });
       if (error) throw error;
@@ -75,21 +64,11 @@ export function SignUpForm({
     setError(null);
 
     try {
-      const getURL = () => {
-        let url =
-          process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
-          process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
-          "http://localhost:3000/";
-        // Make sure to include `https://` when not localhost.
-        url = url.startsWith("http") ? url : `https://${url}`;
-        // Make sure to include a trailing `/`.
-        url = url.endsWith("/") ? url : `${url}/`;
-        return url;
-      };
+      // 使用公共的getURL函数
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: getURL(),
+          redirectTo: getURL("auth/callback"),
         },
       });
       if (error) throw error;
