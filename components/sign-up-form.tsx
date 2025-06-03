@@ -46,7 +46,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: getURL(),
+          emailRedirectTo: getURL("protected"),
         },
       });
       if (error) throw error;
@@ -68,7 +68,7 @@ export function SignUpForm({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: getURL(),
+          redirectTo: getURL("auth/callback"),
         },
       });
       if (error) throw error;
