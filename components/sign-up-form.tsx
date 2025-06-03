@@ -41,11 +41,18 @@ export function SignUpForm({
     }
 
     try {
+      // 获取当前环境的URL
+      const redirectUrl = typeof window !== 'undefined' 
+        ? `${window.location.origin}/protected`
+        : process.env.NEXT_PUBLIC_SITE_URL 
+          ? `${process.env.NEXT_PUBLIC_SITE_URL}/protected`
+          : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/protected`;
+      
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/protected`,
+          emailRedirectTo: redirectUrl,
         },
       });
       if (error) throw error;
@@ -63,10 +70,21 @@ export function SignUpForm({
     setError(null);
 
     try {
+      const getURL = () => {
+        let url =
+          process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+          process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
+          'http://localhost:3000/'
+        // Make sure to include `https://` when not localhost.
+        url = url.startsWith('http') ? url : `https://${url}`
+        // Make sure to include a trailing `/`.
+        url = url.endsWith('/') ? url : `${url}/`
+        return url
+      }
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: getURL(),
         },
       });
       if (error) throw error;
