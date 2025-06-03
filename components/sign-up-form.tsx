@@ -46,7 +46,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: getURL("protected"),
+          emailRedirectTo: getURL(),
         },
       });
       if (error) throw error;
