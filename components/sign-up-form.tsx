@@ -42,17 +42,22 @@ export function SignUpForm({
 
     try {
       // 获取当前环境的URL
-      const redirectUrl = typeof window !== 'undefined' 
-        ? `${window.location.origin}/protected`
-        : process.env.NEXT_PUBLIC_SITE_URL 
-          ? `${process.env.NEXT_PUBLIC_SITE_URL}/protected`
-          : `${process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'http://localhost:3000'}/protected`;
-      
+      const getURL = () => {
+        let url =
+          process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
+          process.env.VERCEL_URL ?? // Automatically set by Vercel.
+          "http://localhost:3000/";
+        // Make sure to include `https://` when not localhost.
+        url = url.startsWith("http") ? url : `https://${url}`;
+        // Make sure to include a trailing `/`.
+        url = url.endsWith("/") ? url : `${url}/`;
+        return url;
+      };
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
+          emailRedirectTo: getURL(),
         },
       });
       if (error) throw error;
@@ -74,15 +79,15 @@ export function SignUpForm({
         let url =
           process?.env?.NEXT_PUBLIC_SITE_URL ?? // Set this to your site URL in production env.
           process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // Automatically set by Vercel.
-          'http://localhost:3000/'
+          "http://localhost:3000/";
         // Make sure to include `https://` when not localhost.
-        url = url.startsWith('http') ? url : `https://${url}`
+        url = url.startsWith("http") ? url : `https://${url}`;
         // Make sure to include a trailing `/`.
-        url = url.endsWith('/') ? url : `${url}/`
-        return url
-      }
+        url = url.endsWith("/") ? url : `${url}/`;
+        return url;
+      };
       const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
+        provider: "google",
         options: {
           redirectTo: getURL(),
         },
@@ -103,16 +108,16 @@ export function SignUpForm({
         </CardHeader>
         <CardContent>
           <div className="flex flex-col gap-4">
-            <Button 
-              type="button" 
-              variant="outline" 
+            <Button
+              type="button"
+              variant="outline"
               onClick={handleGoogleSignUp}
               disabled={isGoogleLoading}
               className="w-full"
             >
               {isGoogleLoading ? "注册中..." : "使用Google账号注册"}
             </Button>
-            
+
             <div className="relative">
               <div className="absolute inset-0 flex items-center">
                 <span className="w-full border-t" />
@@ -168,7 +173,10 @@ export function SignUpForm({
               </div>
               <div className="mt-4 text-center text-sm">
                 Already have an account?{" "}
-                <Link href="/auth/login" className="underline underline-offset-4">
+                <Link
+                  href="/auth/login"
+                  className="underline underline-offset-4"
+                >
                   Login
                 </Link>
               </div>
