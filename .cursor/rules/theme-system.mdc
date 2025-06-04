@@ -1,0 +1,49 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 主题系统指南
+
+本项目使用HeroUI和next-themes实现主题切换功能。
+
+## 主题配置
+
+主题配置在[app/providers.tsx](mdc:app/providers.tsx)中设置：
+
+```tsx
+<NextThemesProvider
+  attribute="class"
+  defaultTheme="system"
+  enableSystem
+  disableTransitionOnChange
+>
+  <HeroUIProvider>
+    {children}
+  </HeroUIProvider>
+</NextThemesProvider>
+```
+
+## 主题切换组件
+
+主题切换功能通过[components/theme-switcher.tsx](mdc:components/theme-switcher.tsx)组件实现，它使用了HeroUI的Dropdown组件。
+
+## 使用方法
+
+1. 在需要使用主题的组件中引入useTheme钩子：
+```tsx
+import { useTheme } from "next-themes";
+const { theme, setTheme } = useTheme();
+```
+
+2. 切换主题：
+```tsx
+// 设置为浅色模式
+setTheme("light");
+// 设置为深色模式
+setTheme("dark");
+// 设置为跟随系统
+setTheme("system");
+```
+
+3. 主题测试页面位于[app/theme-test.tsx](mdc:app/theme-test.tsx)，展示了不同主题下的UI组件外观。

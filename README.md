@@ -1,105 +1,189 @@
-<a href="https://demo-nextjs-with-supabase.vercel.app/">
-  <img alt="Next.js and Supabase Starter Kit - the fastest way to build apps with Next.js and Supabase" src="https://demo-nextjs-with-supabase.vercel.app/opengraph-image.png">
-  <h1 align="center">Next.js and Supabase Starter Kit</h1>
-</a>
+# Next.js + Supabase + HeroUI 模板
 
 <p align="center">
- The fastest way to build apps with Next.js and Supabase
+  基于Next.js和Supabase构建的全栈应用模板，集成了认证、主题切换和支付功能
 </p>
 
 <p align="center">
-  <a href="#features"><strong>Features</strong></a> ·
-  <a href="#demo"><strong>Demo</strong></a> ·
-  <a href="#deploy-to-vercel"><strong>Deploy to Vercel</strong></a> ·
-  <a href="#clone-and-run-locally"><strong>Clone and run locally</strong></a> ·
-  <a href="#feedback-and-issues"><strong>Feedback and issues</strong></a>
-  <a href="#more-supabase-examples"><strong>More Examples</strong></a>
+  <a href="#功能特性"><strong>功能特性</strong></a> ·
+  <a href="#技术栈"><strong>技术栈</strong></a> ·
+  <a href="#本地开发"><strong>本地开发</strong></a> ·
+  <a href="#项目结构"><strong>项目结构</strong></a> ·
+  <a href="#环境变量"><strong>环境变量</strong></a> ·
+  <a href="#部署"><strong>部署</strong></a>
 </p>
-<br/>
 
-## Features
+## 功能特性
 
-- Works across the entire [Next.js](https://nextjs.org) stack
-  - App Router
-  - Pages Router
-  - Middleware
-  - Client
-  - Server
-  - It just works!
-- supabase-ssr. A package to configure Supabase Auth to use cookies
-- Password-based authentication block installed via the [Supabase UI Library](https://supabase.com/ui/docs/nextjs/password-based-auth)
-- Styling with [Tailwind CSS](https://tailwindcss.com)
-- Components with [shadcn/ui](https://ui.shadcn.com/)
-- Optional deployment with [Supabase Vercel Integration and Vercel deploy](#deploy-your-own)
-  - Environment variables automatically assigned to Vercel project
+- **认证系统**：完整的用户认证流程
+  - 登录/注册
+  - 密码重置
+  - 受保护的路由
+  - 会话管理
+- **主题系统**：基于HeroUI和next-themes
+  - 浅色/深色模式切换
+  - 响应系统主题设置
+  - 主题持久化
+- **支付系统**：Stripe集成
+  - Supabase Edge Functions处理支付逻辑
+  - 支付意向创建
+  - Stripe Checkout集成
+  - 开发模式支持
+  - 支付调试工具
+- **响应式设计**：适配各种设备尺寸
+- **类型安全**：完整的TypeScript支持
 
-## Demo
+## 技术栈
 
-You can view a fully working demo at [demo-nextjs-with-supabase.vercel.app](https://demo-nextjs-with-supabase.vercel.app/).
+- **前端**：
+  - [Next.js 14](https://nextjs.org/)：React框架
+  - [HeroUI](https://heroui.com/)：UI组件库
+  - [TailwindCSS](https://tailwindcss.com/)：CSS框架
+  - [next-themes](https://github.com/pacocoursey/next-themes)：主题管理
+  
+- **后端**：
+  - [Supabase](https://supabase.com/)：后端即服务平台
+  - [Supabase Auth](https://supabase.com/docs/guides/auth)：认证服务
+  - [Supabase Edge Functions](https://supabase.com/docs/guides/functions)：无服务器函数
+  
+- **支付**：
+  - [Stripe](https://stripe.com/)：支付处理服务
 
-## Deploy to Vercel
+## 本地开发
 
-Vercel deployment will guide you through creating a Supabase account and project.
+1. 克隆仓库
 
-After installation of the Supabase integration, all relevant environment variables will be assigned to the project so the deployment is fully functioning.
+```bash
+git clone <repository-url>
+cd netx-supabase-template
+```
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&project-name=nextjs-with-supabase&repository-name=nextjs-with-supabase&demo-title=nextjs-with-supabase&demo-description=This+starter+configures+Supabase+Auth+to+use+cookies%2C+making+the+user%27s+session+available+throughout+the+entire+Next.js+app+-+Client+Components%2C+Server+Components%2C+Route+Handlers%2C+Server+Actions+and+Middleware.&demo-url=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2F&external-id=https%3A%2F%2Fgithub.com%2Fvercel%2Fnext.js%2Ftree%2Fcanary%2Fexamples%2Fwith-supabase&demo-image=https%3A%2F%2Fdemo-nextjs-with-supabase.vercel.app%2Fopengraph-image.png)
+2. 安装依赖
 
-The above will also clone the Starter kit to your GitHub, you can clone that locally and develop locally.
+```bash
+npm install
+# 或
+yarn install
+# 或
+bun install
+```
 
-If you wish to just develop locally and not deploy to Vercel, [follow the steps below](#clone-and-run-locally).
+3. 配置环境变量
 
-## Clone and run locally
+复制`.env.example`到`.env.local`并设置必要的环境变量：
 
-1. You'll first need a Supabase project which can be made [via the Supabase dashboard](https://database.new)
+```
+# Supabase配置
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
-2. Create a Next.js app using the Supabase Starter template npx command
+# 可选：支付配置
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+```
 
-   ```bash
-   npx create-next-app --example with-supabase with-supabase-app
-   ```
+4. 启动开发服务器
 
-   ```bash
-   yarn create next-app --example with-supabase with-supabase-app
-   ```
+```bash
+npm run dev
+# 或
+yarn dev
+# 或
+bun dev
+```
 
-   ```bash
-   pnpm create next-app --example with-supabase with-supabase-app
-   ```
+5. 启动Supabase本地服务（可选）
 
-3. Use `cd` to change into the app's directory
+```bash
+supabase start
+```
 
-   ```bash
-   cd with-supabase-app
-   ```
+现在可以在[http://localhost:3000](http://localhost:3000)访问应用。
 
-4. Rename `.env.example` to `.env.local` and update the following:
+## 项目结构
 
-   ```
-   NEXT_PUBLIC_SUPABASE_URL=[INSERT SUPABASE PROJECT URL]
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=[INSERT SUPABASE PROJECT API ANON KEY]
-   ```
+```
+.
+├── app/                    # Next.js应用目录
+│   ├── auth/               # 认证相关页面
+│   ├── payment/            # 支付相关页面
+│   ├── protected/          # 受保护的页面
+│   ├── layout.tsx          # 根布局
+│   └── providers.tsx       # 主题和UI提供者
+├── components/             # 可复用组件
+│   ├── ui/                 # 基础UI组件
+│   ├── login-form.tsx      # 登录表单
+│   ├── sign-up-form.tsx    # 注册表单
+│   └── theme-switcher.tsx  # 主题切换组件
+├── lib/                    # 工具库
+│   ├── supabase/           # Supabase客户端
+│   └── utils.ts            # 工具函数
+└── supabase/               # Supabase配置
+    └── functions/          # Edge Functions
+        └── stripe-payment/ # 支付处理函数
+```
 
-   Both `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` can be found in [your Supabase project's API settings](https://supabase.com/dashboard/project/_?showConnect=true)
+## 环境变量
 
-5. You can now run the Next.js local development server:
+项目使用以下环境变量：
 
-   ```bash
-   npm run dev
-   ```
+```
+# 基础URL配置
+NEXT_PUBLIC_SITE_URL=your-site-url
+NEXT_PUBLIC_VERCEL_URL=your-vercel-url
 
-   The starter kit should now be running on [localhost:3000](http://localhost:3000/).
+# Supabase配置
+NEXT_PUBLIC_SUPABASE_URL=your-supabase-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-supabase-anon-key
 
-6. This template comes with the default shadcn/ui style initialized. If you instead want other ui.shadcn styles, delete `components.json` and [re-install shadcn/ui](https://ui.shadcn.com/docs/installation/next)
+# Stripe配置(可选)
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+```
 
-> Check out [the docs for Local Development](https://supabase.com/docs/guides/getting-started/local-development) to also run Supabase locally.
+Supabase Edge Function需要以下环境变量：
 
-## Feedback and issues
+```
+STRIPE_SECRET_KEY=your-stripe-secret-key
+STRIPE_WEBHOOK_SECRET=your-stripe-webhook-secret
+SUPABASE_URL=your-supabase-url
+SUPABASE_ANON_KEY=your-supabase-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-supabase-service-role-key
+```
 
-Please file feedback and issues over on the [Supabase GitHub org](https://github.com/supabase/supabase/issues/new/choose).
+## 部署
 
-## More Supabase examples
+### Vercel部署
 
-- [Next.js Subscription Payments Starter](https://github.com/vercel/nextjs-subscription-payments)
-- [Cookie-based Auth and the Next.js 13 App Router (free course)](https://youtube.com/playlist?list=PL5S4mPUpp4OtMhpnp93EFSo42iQ40XjbF)
-- [Supabase Auth and the Next.js App Router](https://github.com/supabase/supabase/tree/master/examples/auth/nextjs)
+1. 使用Vercel CLI部署：
+
+```bash
+vercel
+```
+
+2. 或通过Vercel仪表板部署：
+   - 连接GitHub仓库
+   - 配置环境变量
+   - 部署项目
+
+### Supabase Edge Functions部署
+
+1. 登录Supabase CLI：
+
+```bash
+supabase login
+```
+
+2. 链接到你的Supabase项目：
+
+```bash
+supabase link --project-ref your-project-id
+```
+
+3. 部署Edge Functions：
+
+```bash
+supabase functions deploy stripe-payment
+```
+
+## 许可证
+
+MIT

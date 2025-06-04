@@ -1,0 +1,51 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# URL配置指南
+
+本项目中的URL配置对于正确处理重定向和API调用至关重要。
+
+## URL获取
+
+应使用[lib/utils.ts](mdc:lib/utils.ts)中的`getURL()`函数来获取基础URL，该函数会根据环境返回正确的URL：
+
+```ts
+// 获取当前环境的URL
+export const getURL = () => {
+  let url =
+    process?.env?.NEXT_PUBLIC_SITE_URL ?? // 设置这个为你的网站URL
+    process?.env?.NEXT_PUBLIC_VERCEL_URL ?? // 自动设置为Vercel部署的URL
+    'http://localhost:3000/';
+  
+  // 确保URL格式正确
+  url = url.includes('http') ? url : `https://${url}`;
+  url = url.charAt(url.length - 1) === '/' ? url : `${url}/`;
+  
+  return url;
+};
+```
+
+## 重定向URL
+
+在认证流程中，重定向URL应使用`getURL()`函数来确保在所有环境中都能正确重定向：
+
+```ts
+const redirectTo = `${getURL()}auth/callback`;
+```
+
+## API请求URL
+
+调用Supabase函数时，请使用适当的URL格式：
+
+- 本地开发: `http://127.0.0.1:54321/functions/v1/function-name`
+- 生产环境: `https://<your-project>.supabase.co/functions/v1/function-name`
+
+## 环境变量
+
+URL相关的环境变量：
+
+- `NEXT_PUBLIC_SITE_URL`: 站点的公共URL
+- `NEXT_PUBLIC_VERCEL_URL`: Vercel部署的URL(自动设置)
+- `NEXT_PUBLIC_SUPABASE_URL`: Supabase项目URL

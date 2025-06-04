@@ -1,0 +1,37 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 项目结构指南
+
+本项目是一个基于Next.js和Supabase的模板应用，集成了认证、主题切换和支付功能。
+
+## 主要目录结构
+
+- `app/`: Next.js应用的主要页面和路由
+  - `layout.tsx`: 根布局组件，包含页面的基本结构
+  - `providers.tsx`: 提供主题和HeroUI上下文的提供者组件
+  - `auth/`: 认证相关页面
+  - `protected/`: 受保护的页面，需要登录后访问
+  - `payment/`: 支付相关页面
+
+- `components/`: 应用的可复用组件
+  - `theme-switcher.tsx`: 主题切换组件
+  - `ui/`: 基础UI组件
+  - `login-form.tsx`/`sign-up-form.tsx`: 认证表单组件
+  - `stripe-payment-button.tsx`: Stripe支付按钮组件
+
+- `lib/`: 工具库和工具函数
+  - `supabase/`: Supabase客户端和相关功能
+  - `utils.ts`: 通用工具函数
+
+- `supabase/`: Supabase配置和Edge Functions
+  - `functions/`: Supabase Edge Functions，包括stripe-payment等
+
+## 关键技术
+
+- Next.js: React框架，用于构建前端应用
+- Supabase: 后端即服务(BaaS)平台，提供数据库、认证等功能
+- HeroUI: UI组件库，用于构建用户界面
+- Stripe: 支付处理服务

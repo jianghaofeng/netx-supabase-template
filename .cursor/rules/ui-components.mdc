@@ -1,0 +1,45 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# UI组件系统指南
+
+本项目使用HeroUI作为主要组件库，结合TailwindCSS进行样式定制。
+
+## 主要组件
+
+项目使用以下HeroUI组件：
+
+- Button: 按钮组件
+- Card/CardHeader/CardBody/CardFooter: 卡片组件
+- Dropdown相关组件: 下拉菜单
+- Input: 输入框组件
+- Form相关组件: 表单控件
+
+## 组件引入方式
+
+从HeroUI引入组件：
+
+```tsx
+import { Button, Card, Input } from "@heroui/react";
+```
+
+## 自定义组件
+
+自定义组件位于`components/`目录下：
+
+- [components/theme-switcher.tsx](mdc:components/theme-switcher.tsx): 主题切换组件
+- [components/stripe-payment-button.tsx](mdc:components/stripe-payment-button.tsx): Stripe支付按钮
+- 认证相关表单组件
+
+## TailwindCSS配置
+
+TailwindCSS配置位于[tailwind.config.ts](mdc:tailwind.config.ts)文件中，已设置与HeroUI兼容的配置。
+
+## 开发建议
+
+1. 使用HeroUI提供的组件优先于自定义组件
+2. 遵循项目的主题和颜色系统
+3. 使用TailwindCSS的工具类进行样式调整
+4. 保持组件设计的一致性

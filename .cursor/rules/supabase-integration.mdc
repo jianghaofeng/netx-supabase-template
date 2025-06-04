@@ -1,0 +1,43 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Supabase集成指南
+
+本项目使用Supabase作为后端服务，提供认证、数据库和Edge Functions功能。
+
+## Supabase Edge Functions
+
+Supabase Edge Functions位于[supabase/functions/](mdc:supabase/functions/)目录下：
+
+- `stripe-payment`: 处理Stripe支付相关的函数，支持创建支付意向和处理webhook
+
+## 本地开发Edge Functions
+
+在本地开发和测试Edge Functions：
+
+1. 启动Supabase本地服务：
+```
+supabase start
+```
+
+2. 本地调用函数示例：
+```
+curl -i --location --request POST 'http://127.0.0.1:54321/functions/v1/stripe-payment' \
+  --header 'Authorization: Bearer <JWT_TOKEN>' \
+  --header 'Content-Type: application/json' \
+  --data '{"name":"Functions"}'
+```
+
+## 支付调试
+
+支付调试页面位于[app/payment/debug/page.tsx](mdc:app/payment/debug/page.tsx)，可用于测试Edge Function的连接状态和支付功能。
+
+## 认证
+
+认证相关表单组件：
+- [components/login-form.tsx](mdc:components/login-form.tsx)
+- [components/sign-up-form.tsx](mdc:components/sign-up-form.tsx)
+- [components/forgot-password-form.tsx](mdc:components/forgot-password-form.tsx)
+- [components/update-password-form.tsx](mdc:components/update-password-form.tsx)

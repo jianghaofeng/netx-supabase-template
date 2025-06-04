@@ -1,0 +1,40 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# 支付集成指南
+
+本项目集成了Stripe支付功能，通过Supabase Edge Functions处理支付逻辑。
+
+## 支付处理流程
+
+1. 前端通过支付按钮组件[components/stripe-payment-button.tsx](mdc:components/stripe-payment-button.tsx)发起支付请求
+2. 请求发送到Supabase Edge Function [supabase/functions/stripe-payment/index.ts](mdc:supabase/functions/stripe-payment/index.ts)
+3. Edge Function创建Stripe支付意向并返回客户端密钥或结账URL
+4. 前端根据返回结果跳转到Stripe结账页面或使用Stripe Elements展示支付表单
+5. 支付完成后，Stripe通过webhook通知Edge Function
+6. Edge Function处理webhook并更新数据库中的支付记录
+
+## 支付调试
+
+支付调试页面[app/payment/debug/page.tsx](mdc:app/payment/debug/page.tsx)用于测试Edge Function连接状态和支付功能，可以：
+
+- 测试Edge Function URL连接
+- 发送不同的请求方法(GET/POST/OPTIONS)
+- 自定义请求体
+- 查看响应结果
+
+## 开发模式
+
+支付Edge Function支持开发模式，当没有配置Stripe密钥时，会返回模拟数据。这允许在不设置实际Stripe账户的情况下进行开发和测试。
+
+## 环境变量
+
+支付功能需要以下环境变量：
+
+- `STRIPE_SECRET_KEY`: Stripe API密钥
+- `STRIPE_WEBHOOK_SECRET`: Webhook签名密钥
+- `SUPABASE_URL`: Supabase项目URL
+- `SUPABASE_ANON_KEY`: Supabase匿名密钥
+- `SUPABASE_SERVICE_ROLE_KEY`: Supabase服务角色密钥(用于支付记录)
