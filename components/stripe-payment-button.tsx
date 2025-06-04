@@ -29,9 +29,9 @@ export function StripePaymentButton({
       // 获取当前用户的会话
       const { data: { session } } = await supabase.auth.getSession();
       
-      // 调用 Edge Function 创建支付意向，确保URL格式正确（不使用子路径）
+      // 调用 Edge Function 创建支付意向，使用根路径而不是子路径
       const response = await fetch(
-        `https://ruocdffetovshaizmqat.supabase.co/functions/v1/stripe-payment/create-payment`,
+        `https://ruocdffetovshaizmqat.supabase.co/functions/v1/stripe-payment`,
         {
           method: "POST",
           headers: {
@@ -57,24 +57,16 @@ export function StripePaymentButton({
         throw new Error(data.error || "支付请求失败");
       }
 
-      // 如果有 checkoutUrl，直接重定向到 Stripe Checkout
+      // 重定向到 Stripe Checkout
       if (data.checkoutUrl) {
         window.location.href = data.checkoutUrl;
         return;
+      } else {
+        throw new Error("没有收到结账URL");
       }
-
-      // 否则，需要集成 Stripe Elements
-      if (!data.clientSecret) {
-        throw new Error("没有收到客户端密钥");
-      }
-
-      // 这里应该使用 Stripe Elements 进行支付
-      // 这需要额外的 Stripe.js 集成，示例将在下面提供
-
-      // 支付成功回调
-      if (onSuccess) {
-        onSuccess(data.paymentId);
-      }
+      
+      // 注意：我们不再使用客户端集成，而是完全依赖Stripe Checkout
+      // 成功回调将在用户从Stripe Checkout重定向回来后处理
     } catch (error) {
       console.error("支付过程中出错:", error);
       if (onError) {
@@ -156,4 +148,4 @@ export function StripePaymentForm({ clientSecret, onSuccess, onError }) {
     </Elements>
   );
 }
-*/ 
+*/
