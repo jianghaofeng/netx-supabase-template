@@ -59,7 +59,7 @@ export function LoginForm({
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: getURL(`auth/callback?redirectTo=${encodeURIComponent(redirectTo)}`),
+          redirectTo: getURL(`auth/callback`),
         },
       });
       if (error) throw error;

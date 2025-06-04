@@ -48,7 +48,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: getURL(`auth/callback?redirectTo=${encodeURIComponent(redirectTo)}`),
+          emailRedirectTo: getURL(`auth/callback`),
         },
       });
       if (error) throw error;

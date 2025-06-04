@@ -1,14 +1,27 @@
+"use client";
+
+import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
-import { Button } from "./ui/button";
-import { createClient } from "@/lib/supabase/server";
+import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LogoutButton } from "./logout-button";
+import { Button } from "./ui/button";
 
-export async function AuthButton() {
-  const supabase = await createClient();
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+
+export function AuthButton() {
+  const [user, setUser] = useState(null);
+  const { t } = useTranslation();
+  
+  useEffect(() => {
+    const fetchUser = async () => {
+      const supabase = createClient();
+      const { data } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+    
+    fetchUser();
+  }, []);
 
   return user ? (
     <div className="flex items-center gap-4">
@@ -18,10 +31,10 @@ export async function AuthButton() {
   ) : (
     <div className="flex gap-2">
       <Button asChild size="sm" variant={"outline"}>
-        <Link href="/auth/login">Sign in</Link>
+        <Link href="/auth/login">{t('signIn', 'Sign In')}</Link>
       </Button>
       <Button asChild size="sm" variant={"default"}>
-        <Link href="/auth/sign-up">Sign up</Link>
+        <Link href="/auth/sign-up">{t('signUp', 'Sign Up')}</Link>
       </Button>
     </div>
   );

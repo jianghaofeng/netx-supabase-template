@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { HeroUIProvider } from "@heroui/react";
+import I18nProvider from "@/lib/i18n-provider";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -12,9 +13,11 @@ export function Providers({ children }: { children: React.ReactNode }) {
       enableSystem
       disableTransitionOnChange
     >
-      <HeroUIProvider>
-        {children}
-      </HeroUIProvider>
+      <I18nProvider>
+        <HeroUIProvider>
+          {children}
+        </HeroUIProvider>
+      </I18nProvider>
     </NextThemesProvider>
   );
-} 
+}
