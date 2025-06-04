@@ -55,6 +55,8 @@ export async function updateSession(request: NextRequest) {
       console.log("Redirecting to login page from:", request.nextUrl.pathname);
       const url = request.nextUrl.clone();
       url.pathname = "/auth/login";
+      // 添加原始URL作为redirectTo参数
+      url.searchParams.set("redirectTo", request.nextUrl.pathname);
       return NextResponse.redirect(url);
     }
 
