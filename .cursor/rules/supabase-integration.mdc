@@ -1,6 +1,6 @@
 ---
-description:
-globs:
+description: 
+globs: 
 alwaysApply: false
 ---
 # Supabase集成指南
@@ -9,7 +9,7 @@ alwaysApply: false
 
 ## Supabase Edge Functions
 
-Supabase Edge Functions位于[supabase/functions/](mdc:supabase/functions/)目录下：
+Supabase Edge Functions位于[supabase/functions/](mdc:supabase/functions)目录下：
 
 - `stripe-payment`: 处理Stripe支付相关的函数，支持创建支付意向和处理webhook
 
