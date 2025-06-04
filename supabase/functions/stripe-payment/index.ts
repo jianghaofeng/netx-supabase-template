@@ -49,6 +49,16 @@ Deno.serve(async (req)=>{
   // 移除任何前缀，如 "/functions/v1/stripe-payment"
   if (path.includes("/functions/v1/stripe-payment")) {
     path = path.replace("/functions/v1/stripe-payment", "");
+    // 如果路径包含 "/create-payment"，将其规范化为 ROUTES.CREATE_PAYMENT
+    if (path.includes("/create-payment")) {
+      path = ROUTES.CREATE_PAYMENT;
+    }
+  } else if (path === "/stripe-payment/" || path === "/stripe-payment") {
+    // 处理直接访问 /stripe-payment/ 的情况
+    path = "/";
+  } else if (path === "/stripe-payment/create-payment") {
+    // 处理 /stripe-payment/create-payment 的情况
+    path = ROUTES.CREATE_PAYMENT;
   }
   // 确保路径以 "/" 开头
   if (path === "") path = "/";
@@ -161,10 +171,8 @@ Deno.serve(async (req)=>{
   });
   // 如果提供了成功和取消 URL，则创建结账会话
   if (successUrl && cancelUrl) {
+    // 不再使用已创建的 paymentIntent，而是让 Stripe Checkout 自动创建
     const session = await stripe.checkout.sessions.create({
-      payment_intent_data: {
-        payment_intent: paymentIntent.id
-      },
       mode: "payment",
       success_url: successUrl,
       cancel_url: cancelUrl,
@@ -179,12 +187,15 @@ Deno.serve(async (req)=>{
           },
           quantity: 1
         }
-      ]
+      ],
+      // 添加元数据以便在webhook中识别
+      metadata: {
+        userId: user?.id || "anonymous"
+      }
     });
     return new Response(JSON.stringify({
-      paymentId: paymentIntent.id,
-      clientSecret: paymentIntent.client_secret,
-      checkoutUrl: session.url
+      checkoutUrl: session.url,
+      success: true
     }), {
       headers
     });
